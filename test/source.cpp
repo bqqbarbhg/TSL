@@ -61,6 +61,8 @@ static bool utf8test(const char *str, int len)
 
 bool test_source_utf8()
 {
+	bool ret = true;
+
 	TEST_DEFER(utf8test("", 1));
 	TEST_DEFER(utf8test("A", 1));
 	TEST_DEFER(utf8test("\x24", 1));
@@ -71,5 +73,5 @@ bool test_source_utf8()
 	TEST_DEFER(utf8test("\xF0\x24", 0));
 	TEST_DEFER(utf8test("\xA2", 0));
 
-	return true;
+	return ret;
 }

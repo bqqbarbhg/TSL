@@ -18,7 +18,7 @@ static bool testTokens(const char* src, const std::vector<TSLToken>& target)
 
 	do
 	{
-		TEST_ASSERT(tslToken_get(&lex, &tok) == 0, "Got token");
+		TEST_ASSERT_R(tslToken_get(&lex, &tok) == 0, "Got token", lex.errbuf);
 		got.push_back(tok);
 	} while (tok.type != TSLTOK_END);
 
@@ -41,7 +41,9 @@ static TSLToken mtok(TSLTokenType type)
 
 bool test_token_basic()
 {
+	bool ret = true;
+
 	TEST_DEFER(testTokens("", (std::vector<TSLToken>({ mtok(TSLTOK_END) }))));
 
-	return true;
+	return ret;
 }
