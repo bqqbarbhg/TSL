@@ -55,8 +55,7 @@ int tslSource_filePtr(TSLSource *src, FILE* file)
 	src->free = filePtrFree;
 	src->state = file;
 
-	src->end = filePtrGet(file, src->buf);
-	src->ptr = src->buf;
+	src->end = src->ptr = 0;
 
 	return 0;
 }

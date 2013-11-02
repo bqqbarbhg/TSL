@@ -37,11 +37,6 @@ static char tslSource_get(TSLSource *src)
 	return *src->ptr++;
 }
 
-static char tslSource_peek(TSLSource *src)
-{
-	return *src->ptr;
-}
-
 // Creates a TSLSource that reads from `buf`
 // `buf` must be a 0-terminated string that is valid as long as `src` is
 // Returns: 0 on success, non-0 on error
