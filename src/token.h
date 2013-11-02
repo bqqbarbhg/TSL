@@ -20,17 +20,17 @@ typedef struct TSLToken_s
 	} val;
 } TSLToken;
 
-typedef struct TSLTokenStream_s
+typedef struct TSLLexer_s
 {
 	TSLSource source;
 
 	char *errbuf;
 	size_t errbuf_sz;
-} TSLTokenStream;
+} TSLLexer;
 
 // Read next token from `src`
 // Advances `src`, overwrites `dst`
 // Returns 0 on success, non-0 on error
-int tslToken_get(TSLTokenStream *stream, TSLToken *dst);
+int tslToken_get(TSLLexer *stream, TSLToken *dst);
 
 #endif

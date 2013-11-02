@@ -3,7 +3,7 @@
 #include "util.h"
 #include <stdio.h>
 
-int tslToken_get(TSLTokenStream *stream, TSLToken *dst)
+int tslToken_get(TSLLexer *stream, TSLToken *dst)
 {
 	char c = tslSource_peek(&stream->source);
 

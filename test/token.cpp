@@ -6,19 +6,19 @@ static bool testTokens(const char* src, const std::vector<TSLToken>& target)
 {
 	char errbuf[64];
 
-	TSLTokenStream stream;
+	TSLLexer lex;
 
-	stream.errbuf = errbuf;
-	stream.errbuf_sz = sizeof(errbuf);
+	lex.errbuf = errbuf;
+	lex.errbuf_sz = sizeof(errbuf);
 
-	tslSource_cStringRef(&stream.source, src);
+	tslSource_cStringRef(&lex.source, src);
 
 	std::vector<TSLToken> got;
 	TSLToken tok;
 
 	do
 	{
-		TEST_ASSERT(tslToken_get(&stream, &tok) == 0, "Got token");
+		TEST_ASSERT(tslToken_get(&lex, &tok) == 0, "Got token");
 		got.push_back(tok);
 	} while (tok.type != TSLTOK_END);
 
