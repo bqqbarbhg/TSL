@@ -11,6 +11,8 @@
 
 #define DO_TEST(x) do { bool res = (x)(); printf("%-30s ", #x); if (res) { printf("PASS\n"); } else { printf("FAIL\n"); }  } while (0)
 
+bool test_memory_hooks();
+
 bool test_source_fail();
 bool test_source_file();
 bool test_source_cstringref();

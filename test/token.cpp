@@ -28,6 +28,8 @@ static bool testTokens(const char* src, const std::vector<TSLToken>& target)
 	{
 		TEST_ASSERT(got[i].type == target[i].type, "Scanned correct tokens");
 	}
+
+	return true;
 }
 
 static TSLToken mtok(TSLTokenType type)
