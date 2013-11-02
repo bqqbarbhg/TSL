@@ -21,6 +21,20 @@ static char* filePtrGet(void *state, char *buf)
 	return buf + reads;
 }
 
+int tslSource_cStringRef(TSLSource *src, const char *buffer)
+{
+	src->free = 0;
+
+	if (!buffer)
+		return 1;
+
+	src->ptr = src->buf = (char*)buffer;
+	src->state = 0;
+	src->get = 0;
+	src->end = src->buf + strlen(buffer) + 1;
+
+	return 0;
+}
 
 int tslSource_fileOpen(TSLSource *src, const char* filename)
 {
@@ -30,9 +44,7 @@ int tslSource_fileOpen(TSLSource *src, const char* filename)
 
 int tslSource_filePtr(TSLSource *src, FILE* file)
 {
-	src->buf = 0;
-	src->state = 0;
-	src->free = filePtrFree;
+	src->free = 0;
 
 	// Fail if file is NULL
 	if (!file)
@@ -40,6 +52,7 @@ int tslSource_filePtr(TSLSource *src, FILE* file)
 
 	src->buf = (char*)tsl_malloc(TSL_FILE_CHUNK_SIZE);
 	src->get = filePtrGet;
+	src->free = filePtrFree;
 	src->state = file;
 
 	src->end = filePtrGet(file, src->buf);
@@ -50,5 +63,6 @@ int tslSource_filePtr(TSLSource *src, FILE* file)
 
 void tslSource_free(TSLSource *src)
 {
-	src->free(src);
+	if (src->free)
+		src->free(src);
 }

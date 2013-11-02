@@ -2,6 +2,15 @@
 #include <tsl.h>
 #include <string>
 
+static std::string readString(TSLSource *src)
+{
+	std::string str;
+	char c;
+	while (c = tslSource_get(src))
+		str += c;
+	return str;
+}
+
 bool test_source_fail()
 {
 	TSLSource source;
@@ -19,15 +28,20 @@ bool test_source_file()
 
 	TSLSource source;
 	TEST_ASSERT(tslSource_fileOpen(&source, "test.txt") == 0, "File open success");
-
-	char filebuf[32], *fileptr = filebuf;
-
-	while (*fileptr++ = tslSource_get(&source))
-		;
-
-	TEST_ASSERT(std::string(filebuf) == "teststring", "Read expected string");
+	TEST_ASSERT(readString(&source) == "teststring", "Read expected string");
 
 	tslSource_free(&source);
 
 	return true;
+}
+
+bool test_source_cstringref()
+{
+	TSLSource source;
+	TEST_ASSERT(tslSource_cStringRef(&source, 0) != 0, "Source create fail");
+	TEST_ASSERT(tslSource_cStringRef(&source, "cstringreftest") == 0, "Source create success");
+
+	TEST_ASSERT(readString(&source) == "cstringreftest", "Read expected string");
+
+	tslSource_free(&source);
 }

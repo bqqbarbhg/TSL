@@ -42,12 +42,17 @@ static char tslSource_peek(TSLSource *src)
 	return *src->ptr;
 }
 
-// Cretes a TSLSrc to read buffered from file poitned at `filename`
+// Creates a TSLSource that reads from `buf`
+// `buf` must be a 0-terminated string that is valid as long as `src` is
+// Returns: 0 on success, non-0 on error
+int tslSource_cStringRef(TSLSource *src, const char* buf);
+
+// Cretes a TSLSource to read buffered from file poitned at `filename`
 // Returns: 0 on success, non-0 on error
 int tslSource_fileOpen(TSLSource *src, const char* filename);
 
-// Cretes a TSLSrc to read buffered from `file`
-// Overwrites `src`, takes ownage of `file` (frees it when `tslSrc_free` is called)
+// Cretes a TSLSource to read buffered from `file`
+// Overwrites `src`, takes ownage of `file` (frees it when `tslSource_free` is called)
 // Returns: 0 on success, non-0 on error
 int tslSource_filePtr(TSLSource *src, FILE* file);
 

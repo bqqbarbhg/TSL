@@ -8,9 +8,10 @@
 
 #define TEST_ASSERT(x, m) do { if (!(x)) { printf("> Assert failed: '%s' (" __FILE__ ":" TSTSSTR(__LINE__) ") \n", m); return false; } } while (0)
 
-#define DO_TEST(x) do { bool res = (x)(); printf("%-20s ", #x); if (res) { printf("PASS\n"); } else { printf("FAIL\n"); }  } while (0)
+#define DO_TEST(x) do { bool res = (x)(); printf("%-30s ", #x); if (res) { printf("PASS\n"); } else { printf("FAIL\n"); }  } while (0)
 
 bool test_source_fail();
 bool test_source_file();
+bool test_source_cstringref();
 
 #endif
