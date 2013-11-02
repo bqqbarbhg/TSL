@@ -3,8 +3,6 @@
 
 #include <stdio.h>
 
-#define TSL_UTF8_CHAR_LEN( byte ) ((( 0xE5000000 >> (( (byte) >> 3 ) & 0x1e )) & 3 ) + 1)
-
 // Character source
 typedef struct TSLSource_s
 {
