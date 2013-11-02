@@ -7,6 +7,7 @@ extern "C" {
 
 #include "memory.h"
 #include "source.h"
+#include "token.h"
 
 #ifdef __cplusplus
 }

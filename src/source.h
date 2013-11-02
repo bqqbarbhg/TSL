@@ -3,6 +3,8 @@
 
 #include <stdio.h>
 
+#define TSL_UTF8_CHAR_LEN( byte ) ((( 0xE5000000 >> (( (byte) >> 3 ) & 0x1e )) & 3 ) + 1)
+
 // Character source
 typedef struct TSLSource_s
 {
@@ -27,15 +29,28 @@ typedef struct TSLSource_s
 	void *state;
 } TSLSource;
 
-static char tslSource_get(TSLSource *src)
+static char tslSource_peek(TSLSource *src)
 {
 	if (src->ptr == src->end)
 	{
 		src->end = src->get(src->state, src->buf);
 		src->ptr = src->buf;
 	}
-	return *src->ptr++;
+	return *src->ptr;
 }
+
+static char tslSource_get(TSLSource *src)
+{
+	char c = tslSource_peek(src);
+	src->ptr++;
+	return c;
+}
+
+// Reads a single utf-8 character to `buf`
+// `buf` must be at least 4 bytes long
+// Does not add a null byte after the character
+// Returns: pointer to the end of the character (`buf` if invalid character)
+char *tslSource_getUtf8Char(TSLSource *src, char *buf);
 
 // Creates a TSLSource that reads from `buf`
 // `buf` must be a 0-terminated string that is valid as long as `src` is

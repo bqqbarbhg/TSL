@@ -3,6 +3,34 @@
 
 #define TSL_FILE_CHUNK_SIZE 256
 
+char *tslSource_getUtf8Char(TSLSource *src, char *buf)
+{
+	char c = tslSource_get(src);
+	if ((c & 0x80) == 0)
+	{
+		buf[0] = c;
+		return buf + 1;
+	}
+	if ((c & 0xC0) == 0x80)
+		return buf;
+
+	buf[0] = c;
+	c = tslSource_get(src);
+	if ((c & 0xC0) != 0x80)
+		return buf;
+	char *p = buf + 1;
+	while ((c & 0xC0) == 0x80) {
+		c = tslSource_get(src);
+
+		// Buffer overflow escape
+		if (p == buf + 4)
+			return buf;
+
+		*p++ = c;
+	}
+	return p;
+}
+
 static void filePtrFree(TSLSource *src)
 {
 	free(src->buf);

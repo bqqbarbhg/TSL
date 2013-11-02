@@ -74,6 +74,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\test\main.cpp" />
     <ClCompile Include="..\..\test\source.cpp" />
+    <ClCompile Include="..\..\test\token.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\test\tests.h" />

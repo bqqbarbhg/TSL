@@ -13,11 +13,14 @@
   <ItemGroup>
     <ClInclude Include="..\..\src\memory.h" />
     <ClInclude Include="..\..\src\source.h" />
+    <ClInclude Include="..\..\src\token.h" />
     <ClInclude Include="..\..\src\tsl.h" />
+    <ClInclude Include="..\..\src\util.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\memory.c" />
     <ClCompile Include="..\..\src\source.c" />
+    <ClCompile Include="..\..\src\token.c" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{6CAA39AE-4B65-4A63-AC64-3736E0572CFE}</ProjectGuid>
