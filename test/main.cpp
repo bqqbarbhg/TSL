@@ -12,6 +12,7 @@ int main(int argc, char** argv)
 	DO_TEST(test_source_utf8);
 
 	DO_TEST(test_token_basic);
+	DO_TEST(test_token_failpos);
 
 	getchar();
 }

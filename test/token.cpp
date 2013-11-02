@@ -13,12 +13,14 @@ static bool testTokens(const char* src, const std::vector<TSLToken>& target)
 
 	tslSource_cStringRef(&lex.source, src);
 
+	tslLexer_init(&lex);
+
 	std::vector<TSLToken> got;
 	TSLToken tok;
 
 	do
 	{
-		TEST_ASSERT_R(tslToken_get(&lex, &tok) == 0, "Got token", lex.errbuf);
+		TEST_ASSERT_R(tslLexer_scan(&lex, &tok) == 0, "Got token", lex.errbuf);
 		got.push_back(tok);
 	} while (tok.type != TSLTOK_END);
 
@@ -28,6 +30,8 @@ static bool testTokens(const char* src, const std::vector<TSLToken>& target)
 	{
 		TEST_ASSERT(got[i].type == target[i].type, "Scanned correct tokens");
 	}
+
+	tslLexer_free(&lex);
 
 	return true;
 }
@@ -50,4 +54,28 @@ bool test_token_basic()
 	TEST_DEFER(testTokens("#comment\n", (std::vector<TSLToken>({ mtok(TSLTOK_END) }))));
 
 	return ret;
+}
+
+bool test_token_failpos()
+{
+	char *src =
+		"#testcomment\n"
+		"  `\n";
+
+	TSLLexer lex;
+	lex.errbuf = 0;
+	tslSource_cStringRef(&lex.source, src);
+	tslLexer_init(&lex);
+
+	TSLToken tok;
+
+	while (tslLexer_scan(&lex, &tok) == 0)
+		;
+
+	TEST_ASSERT(lex.line == 2, "Correct line");
+	TEST_ASSERT(lex.col == 3, "Correct column");
+
+	tslLexer_free(&lex);
+
+	return true;
 }

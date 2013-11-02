@@ -20,5 +20,6 @@ bool test_source_cstringref();
 bool test_source_utf8();
 
 bool test_token_basic();
+bool test_token_failpos();
 
 #endif
