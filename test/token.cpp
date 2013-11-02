@@ -44,6 +44,10 @@ bool test_token_basic()
 	bool ret = true;
 
 	TEST_DEFER(testTokens("", (std::vector<TSLToken>({ mtok(TSLTOK_END) }))));
+	TEST_DEFER(testTokens("  \t\t\r\n", (std::vector<TSLToken>({ mtok(TSLTOK_END) }))));
+	TEST_DEFER(testTokens("  \t\t\n", (std::vector<TSLToken>({ mtok(TSLTOK_END) }))));
+	TEST_DEFER(testTokens("#linecomment", (std::vector<TSLToken>({ mtok(TSLTOK_END) }))));
+	TEST_DEFER(testTokens("#comment\n", (std::vector<TSLToken>({ mtok(TSLTOK_END) }))));
 
 	return ret;
 }

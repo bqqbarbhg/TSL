@@ -44,6 +44,13 @@ static char tslSource_get(TSLSource *src)
 	return c;
 }
 
+static char tslSource_next(TSLSource *src)
+{
+	if (src->ptr != src->end)
+		src->ptr++;
+	return tslSource_peek(src);
+}
+
 // Reads a single utf-8 character to `buf`
 // `buf` must be at least 4 bytes long
 // Does not add a null byte after the character

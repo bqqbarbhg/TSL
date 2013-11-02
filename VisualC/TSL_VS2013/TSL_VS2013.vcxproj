@@ -21,6 +21,7 @@
     <ClCompile Include="..\..\src\memory.c" />
     <ClCompile Include="..\..\src\source.c" />
     <ClCompile Include="..\..\src\token.c" />
+    <ClCompile Include="..\..\src\util.c" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{6CAA39AE-4B65-4A63-AC64-3736E0572CFE}</ProjectGuid>

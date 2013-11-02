@@ -9,4 +9,8 @@
 #define TSL_SNPRINTF snprintf
 #endif
 
+// Escapes non-drawable characters (includes 0-terminator)
+// c: Buffer of at least 5 characters
+void tsl_charEscape(char* c);
+
 #endif
