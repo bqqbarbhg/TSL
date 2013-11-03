@@ -14,12 +14,15 @@
 
 bool test_memory_hooks();
 
+bool test_unicode();
+
 bool test_source_fail();
 bool test_source_file();
 bool test_source_cstringref();
 bool test_source_utf8();
 
-bool test_token_basic();
+bool test_token_empty();
+bool test_token_strings();
 bool test_token_failpos();
 bool test_token_errors();
 

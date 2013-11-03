@@ -8,6 +8,7 @@ extern "C" {
 #include "memory.h"
 #include "source.h"
 #include "token.h"
+#include "util.h"
 
 #ifdef __cplusplus
 }

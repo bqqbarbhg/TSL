@@ -15,6 +15,7 @@ typedef enum TSLTokenErrorType_e
 typedef enum TSLTokenType_e
 {
 	TSLTOK_STRING,
+	TSLTOK_IDENTIFIER,
 	TSLTOK_END,
 } TSLTokenType;
 

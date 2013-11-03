@@ -2,6 +2,12 @@
 #include <tsl.h>
 #include <vector>
 
+static void freetok(TSLToken &tok)
+{
+	if (tok.type == TSLTOK_IDENTIFIER || tok.type == TSLTOK_STRING)
+		tsl_free((void*)tok.val.string);
+}
+
 static bool testTokens(const char* src, const std::vector<TSLToken>& target)
 {
 	char errbuf[64];
@@ -29,21 +35,29 @@ static bool testTokens(const char* src, const std::vector<TSLToken>& target)
 	for (unsigned i = 0; i < got.size(); i++)
 	{
 		TEST_ASSERT(got[i].type == target[i].type, "Scanned correct tokens");
+		if (got[i].type == TSLTOK_IDENTIFIER || got[i].type == TSLTOK_STRING)
+		{
+			TEST_ASSERT(!strcmp(got[i].val.string, target[i].val.string), "Scanned strings are equal");
+		}
 	}
+
+	for (auto& tok : got)
+		freetok(tok);
 
 	tslLexer_free(&lex);
 
 	return true;
 }
 
-static TSLToken mtok(TSLTokenType type)
+static TSLToken mtok(TSLTokenType type, const char* str=nullptr)
 {
 	TSLToken t;
 	t.type = type;
+	t.val.string = str;
 	return t;
 }
 
-bool test_token_basic()
+bool test_token_empty()
 {
 	bool ret = true;
 
@@ -52,6 +66,18 @@ bool test_token_basic()
 	TEST_DEFER(testTokens("  \t\t\n", (std::vector<TSLToken>({ mtok(TSLTOK_END) }))));
 	TEST_DEFER(testTokens("#linecomment", (std::vector<TSLToken>({ mtok(TSLTOK_END) }))));
 	TEST_DEFER(testTokens("#comment\n", (std::vector<TSLToken>({ mtok(TSLTOK_END) }))));
+
+	return ret;
+}
+
+bool test_token_strings()
+{
+	bool ret = true;
+
+	TEST_DEFER(testTokens("\"asd\"", (std::vector<TSLToken>({ mtok(TSLTOK_STRING, "asd"), mtok(TSLTOK_END) }))));
+	TEST_DEFER(testTokens("\"uni\\u0024\"", (std::vector<TSLToken>({ mtok(TSLTOK_STRING, "uni\x24"), mtok(TSLTOK_END) }))));
+	TEST_DEFER(testTokens("\"uni\\u00a2\"", (std::vector<TSLToken>({ mtok(TSLTOK_STRING, "uni\xC2\xA2"), mtok(TSLTOK_END) }))));
+	TEST_DEFER(testTokens("\"uni\\u20Ac\"", (std::vector<TSLToken>({ mtok(TSLTOK_STRING, "uni\xE2\x82\xAC"), mtok(TSLTOK_END) }))));
 
 	return ret;
 }

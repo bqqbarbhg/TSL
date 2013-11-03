@@ -76,6 +76,7 @@
     <ClCompile Include="..\..\test\memory.cpp" />
     <ClCompile Include="..\..\test\source.cpp" />
     <ClCompile Include="..\..\test\token.cpp" />
+    <ClCompile Include="..\..\test\unicode.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\test\tests.h" />
