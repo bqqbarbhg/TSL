@@ -13,6 +13,7 @@ int main(int argc, char** argv)
 
 	DO_TEST(test_token_basic);
 	DO_TEST(test_token_failpos);
+	DO_TEST(test_token_errors);
 
 	getchar();
 }

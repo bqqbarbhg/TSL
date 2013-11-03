@@ -79,3 +79,34 @@ bool test_token_failpos()
 
 	return true;
 }
+
+static bool testLexError(const char *src, TSLTokenErrorType errType, int col)
+{
+	TSLLexer lex;
+
+	lex.errbuf = 0;
+	tslSource_cStringRef(&lex.source, src);
+	tslLexer_init(&lex);
+
+	TSLToken tok;
+
+	while (tslLexer_scan(&lex, &tok) == 0)
+		TEST_ASSERT(tok.type != TSLTOK_END, "Found error");
+
+	TEST_ASSERT(lex.errType == errType, "Correct error type");
+	TEST_ASSERT(lex.col == col, "Correct error position");
+
+	tslLexer_free(&lex);
+
+	return true;
+}
+
+bool test_token_errors()
+{
+	bool ret = true;
+	TEST_DEFER(testLexError("\"\\u0FXA\"", TSLLEXERR_INVALID_HEX_DIGIT, 6));
+	TEST_DEFER(testLexError("\"\\!\"", TSLLEXERR_UNKNOWN_ESCAPE_SEQUENCE, 3));
+	TEST_DEFER(testLexError("`", TSLLEXERR_UNEXPECTED_CHARACTER, 1));
+
+	return ret;
+}

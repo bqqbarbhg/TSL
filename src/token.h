@@ -4,9 +4,17 @@
 #include <stdlib.h>
 #include "source.h"
 
+typedef enum TSLTokenErrorType_e
+{
+	TSLLEXERR_UNEXPECTED_CHARACTER,
+	TSLLEXERR_INVALID_HEX_DIGIT,
+	TSLLEXERR_INVALID_UNCIODE_ESCAPE,
+	TSLLEXERR_UNKNOWN_ESCAPE_SEQUENCE,
+} TSLTokenErrorType;
+
 typedef enum TSLTokenType_e
 {
-	TSLTOK_IDENTIFIER,
+	TSLTOK_STRING,
 	TSLTOK_END,
 } TSLTokenType;
 
@@ -24,6 +32,10 @@ typedef struct TSLLexer_s
 {
 	TSLSource source;
 
+	char *tmpStrBuf;
+	size_t tmpStrBufSize;
+
+	TSLTokenErrorType errType;
 	char *errbuf;
 	size_t errbuf_sz;
 	size_t col, line;
