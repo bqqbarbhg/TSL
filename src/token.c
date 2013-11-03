@@ -27,7 +27,8 @@ static char tslsnext(TSLLexer *lex)
 	}
 	else
 	{
-		lex->col++;
+		if ((c & 0xC0) != 0x80)
+			lex->col++;
 	}
 		
 	return c;

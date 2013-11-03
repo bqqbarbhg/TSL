@@ -7,6 +7,7 @@ static bool testUtf8Encoding(unsigned int point, const char *enc)
 	char utfbuf[5];
 	*tsl_pointToUtf8(utfbuf, point) = 0;
 	TEST_ASSERT(strcmp(utfbuf, enc) == 0, "Correct encoding");
+	fprintf(logfile, "%s\n", utfbuf);
 	return true;
 }
 

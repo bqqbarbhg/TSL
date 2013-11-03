@@ -20,13 +20,12 @@ char *tslSource_getUtf8Char(TSLSource *src, char *buf)
 		return buf;
 	char *p = buf + 1;
 	while ((c & 0xC0) == 0x80) {
-		c = tslSource_get(src);
-
 		// Buffer overflow escape
 		if (p == buf + 4)
 			return buf;
 
 		*p++ = c;
+		c = tslSource_get(src);
 	}
 	return p;
 }

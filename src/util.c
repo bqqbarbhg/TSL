@@ -4,7 +4,7 @@
 
 void tsl_charEscape(char* c)
 {
-	if (*c < 32)
+	if (*(unsigned char*)c < 32)
 	{
 		switch (*c)
 		{

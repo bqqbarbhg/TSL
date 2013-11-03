@@ -108,9 +108,12 @@ bool test_token_failpos()
 
 static bool testLexError(const char *src, TSLTokenErrorType errType, int col)
 {
+	char errbuf[128];
+
 	TSLLexer lex;
 
-	lex.errbuf = 0;
+	lex.errbuf = errbuf;
+	lex.errbuf_sz = sizeof(errbuf);
 	tslSource_cStringRef(&lex.source, src);
 	tslLexer_init(&lex);
 
@@ -122,6 +125,8 @@ static bool testLexError(const char *src, TSLTokenErrorType errType, int col)
 	TEST_ASSERT(lex.errType == errType, "Correct error type");
 	TEST_ASSERT(lex.col == col, "Correct error position");
 
+	fprintf(logfile, "(%d:%d): %s\n", lex.line, lex.col, lex.errbuf);
+
 	tslLexer_free(&lex);
 
 	return true;
@@ -131,8 +136,9 @@ bool test_token_errors()
 {
 	bool ret = true;
 	TEST_DEFER(testLexError("\"\\u0FXA\"", TSLLEXERR_INVALID_HEX_DIGIT, 6));
-	TEST_DEFER(testLexError("\"\\!\"", TSLLEXERR_UNKNOWN_ESCAPE_SEQUENCE, 3));
-	TEST_DEFER(testLexError("`", TSLLEXERR_UNEXPECTED_CHARACTER, 1));
+	TEST_DEFER(testLexError("\"\\\xE2\x82\xAC\"", TSLLEXERR_UNKNOWN_ESCAPE_SEQUENCE, 3));
+	TEST_DEFER(testLexError("\xF0\xA4\xAD\xA2", TSLLEXERR_UNEXPECTED_CHARACTER, 1));
+	TEST_DEFER(testLexError("\"\xF0\xA4\xAD\xA2\\u0FA\xE2\x82\xAC\"", TSLLEXERR_INVALID_HEX_DIGIT, 8));
 
 	return ret;
 }
